@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import com.orangejuice724.gameengine.graphics.Colours;
+import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
@@ -22,7 +23,7 @@ public class GameEngine extends Canvas implements Runnable
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
-	public static final String NAME = "Storm Engine v0.2";
+	public static final String NAME = "Storm Engine v0.56a";
 	
 	private JFrame frame;
 	
@@ -177,6 +178,8 @@ public class GameEngine extends Canvas implements Runnable
 				screen.render(x<<3, y<<3, 0, Colours.get(555, 505, 055, 550), flipX, flipY);
 			}
 		}
+		
+		Font.render("STORM ENGINE v0.56a!", screen, 0, 0, Colours.get(000, -1, -1, -1));
 		
 		for(int y = 0; y < screen.height; y++)
 		{
