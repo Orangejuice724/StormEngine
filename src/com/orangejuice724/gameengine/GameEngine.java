@@ -15,120 +15,128 @@ import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
+import com.orangejuice724.gameengine.level.Level;
 
 public class GameEngine extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "Storm Engine v0.56a";
-	
+
 	private JFrame frame;
-	
+
 	public boolean running = false;
 	public int tickCount = 0;
-	
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-	private int[] colours = new int[6*6*6];
-	
+
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT,
+			BufferedImage.TYPE_INT_RGB);
+	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer())
+			.getData();
+	private int[] colours = new int[6 * 6 * 6];
+
 	private Screen screen;
 	public InputHandler input;
-	
+
+	public Level level;
+
 	public GameEngine()
 	{
-		setMinimumSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
-		setMaximumSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
-		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
-		
+		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+
 		frame = new JFrame(NAME);
-		
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		
+
 		frame.add(this, BorderLayout.CENTER);
 		frame.pack();
-		
+
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-	
+
 	public void init()
 	{
 		int index = 0;
-		for(int r = 0; r < 6; r++)
+		for (int r = 0; r < 6; r++)
 		{
-			for(int g = 0; g < 6; g++)
+			for (int g = 0; g < 6; g++)
 			{
-				for(int b = 0; b < 6; b++)
+				for (int b = 0; b < 6; b++)
 				{
-					int rr = (r * 255/5);
-					int gg = (g * 255/5);
-					int bb = (b * 255/5);
-					
+					int rr = (r * 255 / 5);
+					int gg = (g * 255 / 5);
+					int bb = (b * 255 / 5);
+
 					colours[index++] = rr << 16 | gg << 8 | bb;
 				}
 			}
 		}
-		
+
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
+		level = new Level(64, 64);
 	}
-	
+
 	public synchronized void start()
 	{
 		running = true;
 		new Thread(this).start();
 	}
-	
+
 	public synchronized void stop()
 	{
 		running = false;
 	}
-	
-	public void run() 
+
+	public void run()
 	{
 		long lastTime = System.nanoTime();
-		double nsPerTick = 1000000000d/60d;
-		
+		double nsPerTick = 1000000000d / 60d;
+
 		int ticks = 0;
 		int frames = 0;
-		
+
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
-		
+
 		init();
-		
-		while(running)
+
+		while (running)
 		{
 			long now = System.nanoTime();
-			delta += (now - lastTime)/nsPerTick;
+			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
-			
+
 			boolean shouldRender = true;
-			
-			while(delta >= 1)
+
+			while (delta >= 1)
 			{
 				ticks++;
 				tick();
 				delta -= 1;
 				shouldRender = true;
 			}
-			try {
+			try
+			{
 				Thread.sleep(2);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException e)
+			{
 				e.printStackTrace();
 			}
-			if(shouldRender)
+			if (shouldRender)
 			{
 				frames++;
 				render();
 			}
-			
-			if(System.currentTimeMillis() - lastTimer >= 1000)
+
+			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
 				System.out.println("FPS: " + frames + " UPS:" + ticks);
@@ -137,66 +145,73 @@ public class GameEngine extends Canvas implements Runnable
 			}
 		}
 	}
-	
+
+	private int x = 0, y = 0;
+
 	public void tick()
 	{
 		tickCount++;
-		
-		if(input.up.isPressed())
+
+		if (input.up.isPressed())
 		{
-			screen.yOffset--;
+			y--;
 		}
-		if(input.down.isPressed()) 
+		if (input.down.isPressed())
 		{
-			screen.yOffset++;
+			y++;
 		}
-		if(input.left.isPressed())
+		if (input.left.isPressed())
 		{
-			screen.xOffset--;
+			x--;
 		}
-		if(input.right.isPressed()) 
+		if (input.right.isPressed())
 		{
-			screen.xOffset++;
+			x++;
 		}
+		level.tick();
 	}
-	
+
 	public void render()
 	{
 		BufferStrategy bs = getBufferStrategy();
-		if(bs == null)
+		if (bs == null)
 		{
 			createBufferStrategy(3);
 			return;
 		}
-		
-		for(int y = 0; y < 32; y++)
+
+		int xOffset = x - (screen.width / 2);
+		int yOffset = y - (screen.height / 2);
+
+		level.renderTiles(screen, xOffset, yOffset);
+
+		for (int x = 0; x < level.width; x++)
 		{
-			for(int x = 0; x < 32; x++)
+			int colour = Colours.get(-1, -1, -1, 000);
+			if (x % 10 == 0 && x != 0)
 			{
-				boolean flipX = x % 2 == 1;
-				boolean flipY = y % 2 == 1;
-				screen.render(x<<3, y<<3, 0, Colours.get(555, 505, 055, 550), flipX, flipY);
+				colour = Colours.get(-1, -1, -1, 500);
+			}
+			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
+		}
+
+		for (int y = 0; y < screen.height; y++)
+		{
+			for (int x = 0; x < screen.width; x++)
+			{
+				int colourCode = screen.pixels[x + y * screen.width];
+				if (colourCode < 255)
+					pixels[x + y * WIDTH] = colours[colourCode];
 			}
 		}
-		
-		Font.render("STORM ENGINE v0.56a!", screen, 0, 0, Colours.get(000, -1, -1, -1));
-		
-		for(int y = 0; y < screen.height; y++)
-		{
-			for(int x = 0; x < screen.width; x++)
-			{
-				int colourCode = screen.pixels[x+y * screen.width];
-				if(colourCode < 255) pixels[x+y * WIDTH] = colours[colourCode];
-			}
-		}
-		
+
 		Graphics g = bs.getDrawGraphics();
 		g.drawRect(0, 0, getWidth(), getHeight());
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new GameEngine().start();

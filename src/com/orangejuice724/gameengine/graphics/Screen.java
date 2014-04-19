@@ -52,4 +52,10 @@ public class Screen
 			}
 		}
 	}
+
+	public void setOffset(int xOffset, int yOffset)
+	{
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
 }
