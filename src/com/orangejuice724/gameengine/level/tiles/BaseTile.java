@@ -12,8 +12,13 @@ public class BaseTile extends Tile
 	public BaseTile(int id, int x, int y, int tileColour, int levelColour)
 	{
 		super(id, false, false, levelColour);
-		this.tileId = x+y;
+		this.tileId = x+y*32;
 		this.tileColour = tileColour;
+	}
+	
+	public void tick()
+	{
+		
 	}
 	
 	public void render(Screen screen, Level level, int x, int y)

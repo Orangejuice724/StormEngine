@@ -65,7 +65,8 @@ public class Level
 			{
 				tileCheck: for (Tile t : Tile.tiles)
 				{
-					if (t != null && t.getLevelColour() == tileColours[x + y * width])
+					if (t != null
+							&& t.getLevelColour() == tileColours[x + y * width])
 					{
 						this.tiles[x + y * width] = t.getID();
 						break tileCheck;
@@ -79,8 +80,10 @@ public class Level
 	{
 		try
 		{
-			ImageIO.write(image, "png", new File(Level.class.getResource(this.imagePath).getFile()));
-		}catch (IOException e)
+			ImageIO.write(image, "png",
+					new File(Level.class.getResource(this.imagePath).getFile()));
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -116,6 +119,13 @@ public class Level
 		for (Entity e : entities)
 		{
 			e.tick();
+		}
+		
+		for (Tile t : Tile.tiles)
+		{
+			if (t == null)
+				break;
+			t.tick();
 		}
 	}
 	
