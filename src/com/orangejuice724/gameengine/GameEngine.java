@@ -10,6 +10,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import com.orangejuice724.gameengine.entities.player.Player;
 import com.orangejuice724.gameengine.graphics.Colours;
 import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
@@ -41,6 +42,8 @@ public class GameEngine extends Canvas implements Runnable
 	public InputHandler input;
 
 	public Level level;
+	
+	public Player player;
 
 	public GameEngine()
 	{
@@ -82,6 +85,8 @@ public class GameEngine extends Canvas implements Runnable
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 		level = new Level(64, 64);
+		player = new Player(level, 0, 0, input);
+		level.addEntity(player);
 	}
 
 	public synchronized void start()
@@ -146,28 +151,10 @@ public class GameEngine extends Canvas implements Runnable
 		}
 	}
 
-	private int x = 0, y = 0;
-
 	public void tick()
 	{
 		tickCount++;
 
-		if (input.up.isPressed())
-		{
-			y--;
-		}
-		if (input.down.isPressed())
-		{
-			y++;
-		}
-		if (input.left.isPressed())
-		{
-			x--;
-		}
-		if (input.right.isPressed())
-		{
-			x++;
-		}
 		level.tick();
 	}
 
@@ -180,20 +167,12 @@ public class GameEngine extends Canvas implements Runnable
 			return;
 		}
 
-		int xOffset = x - (screen.width / 2);
-		int yOffset = y - (screen.height / 2);
+		int xOffset = player.x - (screen.width / 2);
+		int yOffset = player.y - (screen.height / 2);
 
 		level.renderTiles(screen, xOffset, yOffset);
-
-		for (int x = 0; x < level.width; x++)
-		{
-			int colour = Colours.get(-1, -1, -1, 000);
-			if (x % 10 == 0 && x != 0)
-			{
-				colour = Colours.get(-1, -1, -1, 500);
-			}
-			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
-		}
+		
+		level.renderEntities(screen);
 
 		for (int y = 0; y < screen.height; y++)
 		{
