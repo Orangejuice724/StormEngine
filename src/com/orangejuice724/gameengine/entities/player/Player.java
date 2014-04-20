@@ -2,6 +2,7 @@ package com.orangejuice724.gameengine.entities.player;
 
 import com.orangejuice724.gameengine.entities.Mob;
 import com.orangejuice724.gameengine.graphics.Colours;
+import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.input.InputHandler;
 import com.orangejuice724.gameengine.level.Level;
@@ -15,10 +16,13 @@ public class Player extends Mob
 	protected boolean isSwimming = false;
 	private int tickCount;
 	
-	public Player(Level level, int x, int y, InputHandler input)
+	private String username;
+	
+	public Player(Level level, int x, int y, InputHandler input, String username)
 	{
 		super(level, "Player", x, y, 1);
 		this.input = input;
+		this.username = username;
 	}
 	
 	public void tick()
@@ -98,7 +102,7 @@ public class Player extends Mob
 				yOffset -= 1;
 				waterColour = Colours.get(-1, 225, 115, -1);
 			}
-			else if(30 <= tickCount%60 && tickCount%60 < 45)
+			else if (30 <= tickCount % 60 && tickCount % 60 < 45)
 			{
 				waterColour = Colours.get(-1, 115, -1, 225);
 			}
@@ -107,8 +111,10 @@ public class Player extends Mob
 				yOffset -= 1;
 				waterColour = Colours.get(-1, 225, 115, -1);
 			}
-			screen.render(xOffset, yOffset + 3, 0 + 27 * 32, waterColour, 0x00, 1);
-			screen.render(xOffset + 8, yOffset + 3, 0 + 27 * 32, waterColour, 0x01, 1);
+			screen.render(xOffset, yOffset + 3, 0 + 27 * 32, waterColour, 0x00,
+					1);
+			screen.render(xOffset + 8, yOffset + 3, 0 + 27 * 32, waterColour,
+					0x01, 1);
 		}
 		screen.render(xOffset + (modifier * flipTop), yOffset, xTile + yTile
 				* 32, colour, flipTop, scale);
@@ -122,6 +128,13 @@ public class Player extends Mob
 			screen.render(xOffset + modifier - (modifier * flipBottom), yOffset
 					+ modifier, (xTile + 1) + (yTile + 1) * 32, colour,
 					flipBottom, scale);
+		}
+		
+		if (username != null)
+		{
+			Font.render(username, screen, xOffset
+					- ((username.length() - 1) / 2 * 8), yOffset - 10,
+					Colours.get(-1, -1, -1, 555), 1);
 		}
 	}
 	
