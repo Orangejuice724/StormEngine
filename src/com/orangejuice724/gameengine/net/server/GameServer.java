@@ -14,6 +14,7 @@ import com.orangejuice724.gameengine.net.packets.Packet;
 import com.orangejuice724.gameengine.net.packets.Packet.PacketTypes;
 import com.orangejuice724.gameengine.net.packets.Packet00Login;
 import com.orangejuice724.gameengine.net.packets.Packet01Disconnect;
+import com.orangejuice724.gameengine.net.packets.Packet02Move;
 
 public class GameServer extends Thread
 {
@@ -80,9 +81,16 @@ public class GameServer extends Thread
 					+ " has left...");
 			this.removeConnection((Packet01Disconnect) packet);
 			break;
+		case MOVE:
+			packet = new Packet02Move(data);
+			System.out.println(((Packet02Move) packet).getUsername()
+					+ " has moved to X:" + ((Packet02Move) packet).getX()
+					+ ", Y:" + ((Packet02Move) packet));
+			this.handleMove(((Packet02Move)packet));
+			break;
 		}
 	}
-	
+
 	public void addConnection(PlayerMP player, Packet00Login packet)
 	{
 		boolean alreadyConnected = false;
@@ -168,5 +176,17 @@ public class GameServer extends Thread
 		{
 			sendData(data, p.ipAddress, p.port);
 		}
+	}
+	
+	private void handleMove(Packet02Move packet)
+	{
+		if(getPlayerMP(packet.getUsername()) != null)
+		{
+			int index = getPlayerMPIndex(packet.getUsername());
+			this.connectedPlayers.get(index).x = packet.getX();
+			this.connectedPlayers.get(index).y = packet.getY();
+			packet.writeData(this);
+		}
+				
 	}
 }

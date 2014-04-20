@@ -30,6 +30,7 @@ public class GameEngine extends Canvas implements Runnable
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "Storm Engine v0.73a";
+	public static GameEngine gameEngine;
 	
 	public JFrame frame;
 	
@@ -73,6 +74,7 @@ public class GameEngine extends Canvas implements Runnable
 	
 	public void init()
 	{
+		this.gameEngine = this;
 		int index = 0;
 		for (int r = 0; r < 6; r++)
 		{

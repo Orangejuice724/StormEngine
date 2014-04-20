@@ -1,11 +1,13 @@
 package com.orangejuice724.gameengine.entities.player;
 
+import com.orangejuice724.gameengine.GameEngine;
 import com.orangejuice724.gameengine.entities.Mob;
 import com.orangejuice724.gameengine.graphics.Colours;
 import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.input.InputHandler;
 import com.orangejuice724.gameengine.level.Level;
+import com.orangejuice724.gameengine.net.packets.Packet02Move;
 
 public class Player extends Mob
 {
@@ -54,6 +56,9 @@ public class Player extends Mob
 		{
 			move(xa, ya);
 			isMoving = true;
+			
+			Packet02Move packet = new Packet02Move(this.getUsername(), this.x, this.y);
+			packet.writeData(GameEngine.gameEngine.socketClient);
 		}
 		else
 		{

@@ -13,6 +13,7 @@ import com.orangejuice724.gameengine.net.packets.Packet;
 import com.orangejuice724.gameengine.net.packets.Packet.PacketTypes;
 import com.orangejuice724.gameengine.net.packets.Packet00Login;
 import com.orangejuice724.gameengine.net.packets.Packet01Disconnect;
+import com.orangejuice724.gameengine.net.packets.Packet02Move;
 
 public class GameClient extends Thread
 {
@@ -85,6 +86,10 @@ public class GameClient extends Thread
 					+ " has left the world...");
 			gameEngine.level.removePlayerMP(((Packet01Disconnect)packet).getUsername());
 			break;
+		case MOVE:
+			packet = new Packet02Move(data);
+			handleMove((Packet02Move)packet);
+			break;
 		}
 	}
 	
@@ -100,5 +105,10 @@ public class GameClient extends Thread
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private void handleMove(Packet02Move packet)
+	{
+		this.gameEngine.level.movePlayer(packet.getUsername(), packet.getX(), packet.getY());
 	}
 }
