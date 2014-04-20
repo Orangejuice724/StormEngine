@@ -12,40 +12,42 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.orangejuice724.gameengine.entities.player.Player;
+import com.orangejuice724.gameengine.entities.player.PlayerMP;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
 import com.orangejuice724.gameengine.level.Level;
 import com.orangejuice724.gameengine.net.GameClient;
+import com.orangejuice724.gameengine.net.packets.Packet00Login;
 import com.orangejuice724.gameengine.net.server.GameServer;
 
 public class GameEngine extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 1L;
-
+	
 	public static final int WIDTH = 160;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "Storm Engine v0.73a";
-
-	private JFrame frame;
-
+	
+	public JFrame frame;
+	
 	public boolean running = false;
 	public int tickCount = 0;
-
+	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT,
 			BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer())
 			.getData();
 	private int[] colours = new int[6 * 6 * 6];
-
+	
 	private Screen screen;
 	public InputHandler input;
-
+	
 	public Level level;
 	
 	public Player player;
-
+	
 	private GameClient socketClient;
 	private GameServer socketServer;
 	
@@ -54,20 +56,20 @@ public class GameEngine extends Canvas implements Runnable
 		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-
+		
 		frame = new JFrame(NAME);
-
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-
+		
 		frame.add(this, BorderLayout.CENTER);
 		frame.pack();
-
+		
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-
+	
 	public void init()
 	{
 		int index = 0;
@@ -80,26 +82,32 @@ public class GameEngine extends Canvas implements Runnable
 					int rr = (r * 255 / 5);
 					int gg = (g * 255 / 5);
 					int bb = (b * 255 / 5);
-
+					
 					colours[index++] = rr << 16 | gg << 8 | bb;
 				}
 			}
 		}
-
+		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 		level = new Level("/levels/medium_test_level.png");
-		player = new Player(level, 0, 0, input, JOptionPane.showInputDialog(this, "Please enter a username"));
-		level.addEntity(player);
-		socketClient.sendData("ping".getBytes());
+		player = new PlayerMP(level, 30, 30, input, JOptionPane.showInputDialog(this, "Please enter a username"),
+                null, -1);
+        level.addEntity(player);
+        Packet00Login loginPacket = new Packet00Login(player.getUsername());
+        if (socketServer != null) {
+            socketServer.addConnection((PlayerMP) player, loginPacket);
+        }
+        loginPacket.writeData(socketClient);
 	}
-
+	
 	public synchronized void start()
 	{
 		running = true;
 		new Thread(this).start();
 		
-		if(JOptionPane.showConfirmDialog(this, "Do you want to run the server?") == 0)
+		if (JOptionPane.showConfirmDialog(this,
+				"Do you want to run the server?") == 0)
 		{
 			socketServer = new GameServer(this);
 			socketServer.start();
@@ -108,33 +116,33 @@ public class GameEngine extends Canvas implements Runnable
 		socketClient = new GameClient(this, "localhost");
 		socketClient.start();
 	}
-
+	
 	public synchronized void stop()
 	{
 		running = false;
 	}
-
+	
 	public void run()
 	{
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000d / 60d;
-
+		
 		int ticks = 0;
 		int frames = 0;
-
+		
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
-
+		
 		init();
-
+		
 		while (running)
 		{
 			long now = System.nanoTime();
 			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
-
+			
 			boolean shouldRender = true;
-
+			
 			while (delta >= 1)
 			{
 				ticks++;
@@ -145,7 +153,8 @@ public class GameEngine extends Canvas implements Runnable
 			try
 			{
 				Thread.sleep(2);
-			} catch (InterruptedException e)
+			}
+			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
@@ -154,25 +163,25 @@ public class GameEngine extends Canvas implements Runnable
 				frames++;
 				render();
 			}
-
+			
 			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
-				//System.out.println("FPS: " + frames + " UPS:" + ticks);
+				// System.out.println("FPS: " + frames + " UPS:" + ticks);
 				frame.setTitle(NAME + " FPS: " + frames + " UPS:" + ticks);
 				frames = 0;
 				ticks = 0;
 			}
 		}
 	}
-
+	
 	public void tick()
 	{
 		tickCount++;
-
+		
 		level.tick();
 	}
-
+	
 	public void render()
 	{
 		BufferStrategy bs = getBufferStrategy();
@@ -181,14 +190,14 @@ public class GameEngine extends Canvas implements Runnable
 			createBufferStrategy(3);
 			return;
 		}
-
+		
 		int xOffset = player.x - (screen.width / 2);
 		int yOffset = player.y - (screen.height / 2);
-
+		
 		level.renderTiles(screen, xOffset, yOffset);
 		
 		level.renderEntities(screen);
-
+		
 		for (int y = 0; y < screen.height; y++)
 		{
 			for (int x = 0; x < screen.width; x++)
@@ -198,14 +207,14 @@ public class GameEngine extends Canvas implements Runnable
 					pixels[x + y * WIDTH] = colours[colourCode];
 			}
 		}
-
+		
 		Graphics g = bs.getDrawGraphics();
 		g.drawRect(0, 0, getWidth(), getHeight());
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();
 	}
-
+	
 	public static void main(String[] args)
 	{
 		new GameEngine().start();
