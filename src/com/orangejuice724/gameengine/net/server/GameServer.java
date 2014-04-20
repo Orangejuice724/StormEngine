@@ -85,7 +85,7 @@ public class GameServer extends Thread
 			packet = new Packet02Move(data);
 			System.out.println(((Packet02Move) packet).getUsername()
 					+ " has moved to X:" + ((Packet02Move) packet).getX()
-					+ ", Y:" + ((Packet02Move) packet));
+					+ ", Y:" + ((Packet02Move) packet).getY());
 			this.handleMove(((Packet02Move)packet));
 			break;
 		}

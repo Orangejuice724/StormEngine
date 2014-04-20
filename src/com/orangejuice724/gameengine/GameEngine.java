@@ -117,7 +117,7 @@ public class GameEngine extends Canvas implements Runnable
 			socketServer.start();
 		}
 		
-		socketClient = new GameClient(this, "localhost");
+		socketClient = new GameClient(this, "165.228.168.43");
 		socketClient.start();
 	}
 	
