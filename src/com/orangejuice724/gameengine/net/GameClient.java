@@ -10,8 +10,9 @@ import java.net.UnknownHostException;
 import com.orangejuice724.gameengine.GameEngine;
 import com.orangejuice724.gameengine.entities.player.PlayerMP;
 import com.orangejuice724.gameengine.net.packets.Packet;
-import com.orangejuice724.gameengine.net.packets.Packet00Login;
 import com.orangejuice724.gameengine.net.packets.Packet.PacketTypes;
+import com.orangejuice724.gameengine.net.packets.Packet00Login;
+import com.orangejuice724.gameengine.net.packets.Packet01Disconnect;
 
 public class GameClient extends Thread
 {
@@ -78,6 +79,11 @@ public class GameClient extends Thread
 			gameEngine.level.addEntity(player);
 			break;
 		case DISCONNECT:
+			packet = new Packet01Disconnect(data);
+			System.out.println("[" + address.getHostAddress() + ":" + port
+					+ "] " + ((Packet01Disconnect) packet).getUsername()
+					+ " has left the world...");
+			gameEngine.level.removePlayerMP(((Packet01Disconnect)packet).getUsername());
 			break;
 		}
 	}

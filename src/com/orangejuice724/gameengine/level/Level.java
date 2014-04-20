@@ -9,6 +9,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import com.orangejuice724.gameengine.entities.Entity;
+import com.orangejuice724.gameengine.entities.player.PlayerMP;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.level.tiles.Tile;
 
@@ -169,5 +170,19 @@ public class Level
 	public void addEntity(Entity entity)
 	{
 		this.entities.add(entity);
+	}
+
+	public void removePlayerMP(String username)
+	{
+		int index = 0;
+		for(Entity e : entities)
+		{
+			if(e instanceof PlayerMP && ((PlayerMP)e).getUsername().equals(username))
+			{
+				break;
+			}
+			index++;
+		}
+		this.entities.remove(index);
 	}
 }

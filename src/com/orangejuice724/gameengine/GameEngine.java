@@ -20,6 +20,7 @@ import com.orangejuice724.gameengine.level.Level;
 import com.orangejuice724.gameengine.net.GameClient;
 import com.orangejuice724.gameengine.net.packets.Packet00Login;
 import com.orangejuice724.gameengine.net.server.GameServer;
+import com.orangejuice724.gameengine.window.WindowHandler;
 
 public class GameEngine extends Canvas implements Runnable
 {
@@ -43,13 +44,13 @@ public class GameEngine extends Canvas implements Runnable
 	
 	private Screen screen;
 	public InputHandler input;
-	
+	public WindowHandler windowHandler;
 	public Level level;
 	
 	public Player player;
 	
-	private GameClient socketClient;
-	private GameServer socketServer;
+	public GameClient socketClient;
+	public GameServer socketServer;
 	
 	public GameEngine()
 	{
@@ -90,6 +91,7 @@ public class GameEngine extends Canvas implements Runnable
 		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
+		windowHandler = new WindowHandler(this);
 		level = new Level("/levels/medium_test_level.png");
 		player = new PlayerMP(level, 30, 30, input, JOptionPane.showInputDialog(this, "Please enter a username"),
                 null, -1);
