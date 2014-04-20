@@ -1,6 +1,7 @@
 package com.orangejuice724.gameengine.entities;
 
 import com.orangejuice724.gameengine.level.Level;
+import com.orangejuice724.gameengine.level.tiles.Tile;
 
 public abstract class Mob extends Entity
 {
@@ -10,7 +11,7 @@ public abstract class Mob extends Entity
 	protected boolean isMoving;
 	protected int movingDir = 1;
 	protected int scale = 1;
-
+	
 	public Mob(Level level, String name, int x, int y, int speed)
 	{
 		super(level);
@@ -19,7 +20,7 @@ public abstract class Mob extends Entity
 		this.y = y;
 		this.speed = speed;
 	}
-
+	
 	public void move(int xa, int ya)
 	{
 		if (xa != 0 && ya != 0)
@@ -29,9 +30,7 @@ public abstract class Mob extends Entity
 			numSteps--;
 			return;
 		}
-
 		numSteps++;
-
 		if (!hasCollided(xa, ya))
 		{
 			if (ya < 0)
@@ -48,6 +47,22 @@ public abstract class Mob extends Entity
 	}
 	
 	public abstract boolean hasCollided(int xa, int ya);
+	
+	protected boolean isSolidTile(int xa, int ya, int x, int y)
+	{
+		if (level == null)
+		{
+			return false;
+		}
+		Tile lastTile = level.getTile((this.x + x) >> 3, (this.y + y) >> 3);
+		Tile newTile = level.getTile((this.x + x + xa) >> 3,
+				(this.y + y + ya) >> 3);
+		if (!lastTile.equals(newTile) && newTile.isSolid())
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	public String getName()
 	{
