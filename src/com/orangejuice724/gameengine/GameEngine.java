@@ -12,12 +12,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.orangejuice724.gameengine.entities.player.Player;
-import com.orangejuice724.gameengine.graphics.Colours;
-import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
 import com.orangejuice724.gameengine.level.Level;
+import com.orangejuice724.gameengine.net.GameClient;
+import com.orangejuice724.gameengine.net.server.GameServer;
 
 public class GameEngine extends Canvas implements Runnable
 {
@@ -46,6 +46,9 @@ public class GameEngine extends Canvas implements Runnable
 	
 	public Player player;
 
+	private GameClient socketClient;
+	private GameServer socketServer;
+	
 	public GameEngine()
 	{
 		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -88,12 +91,22 @@ public class GameEngine extends Canvas implements Runnable
 		level = new Level("/levels/medium_test_level.png");
 		player = new Player(level, 0, 0, input, JOptionPane.showInputDialog(this, "Please enter a username"));
 		level.addEntity(player);
+		socketClient.sendData("ping".getBytes());
 	}
 
 	public synchronized void start()
 	{
 		running = true;
 		new Thread(this).start();
+		
+		if(JOptionPane.showConfirmDialog(this, "Do you want to run the server?") == 0)
+		{
+			socketServer = new GameServer(this);
+			socketServer.start();
+		}
+		
+		socketClient = new GameClient(this, "localhost");
+		socketClient.start();
 	}
 
 	public synchronized void stop()
@@ -145,7 +158,8 @@ public class GameEngine extends Canvas implements Runnable
 			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
-				System.out.println("FPS: " + frames + " UPS:" + ticks);
+				//System.out.println("FPS: " + frames + " UPS:" + ticks);
+				frame.setTitle(NAME + " FPS: " + frames + " UPS:" + ticks);
 				frames = 0;
 				ticks = 0;
 			}
