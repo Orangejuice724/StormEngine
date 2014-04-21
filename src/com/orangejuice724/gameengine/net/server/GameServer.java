@@ -83,14 +83,12 @@ public class GameServer extends Thread
 			break;
 		case MOVE:
 			packet = new Packet02Move(data);
-			System.out.println(((Packet02Move) packet).getUsername()
-					+ " has moved to X:" + ((Packet02Move) packet).getX()
-					+ ", Y:" + ((Packet02Move) packet).getY());
-			this.handleMove(((Packet02Move)packet));
+			System.out.println(((Packet02Move) packet).getUsername());
+			this.handleMove(((Packet02Move) packet));
 			break;
 		}
 	}
-
+	
 	public void addConnection(PlayerMP player, Packet00Login packet)
 	{
 		boolean alreadyConnected = false;
@@ -180,13 +178,13 @@ public class GameServer extends Thread
 	
 	private void handleMove(Packet02Move packet)
 	{
-		if(getPlayerMP(packet.getUsername()) != null)
+		if (getPlayerMP(packet.getUsername()) != null)
 		{
 			int index = getPlayerMPIndex(packet.getUsername());
 			this.connectedPlayers.get(index).x = packet.getX();
 			this.connectedPlayers.get(index).y = packet.getY();
 			packet.writeData(this);
 		}
-				
+		
 	}
 }

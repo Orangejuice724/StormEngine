@@ -115,6 +115,6 @@ public class GameClient extends Thread
 	
 	private void handleMove(Packet02Move packet)
 	{
-		this.gameEngine.level.movePlayer(packet.getUsername(), packet.getX(), packet.getY());
+		this.gameEngine.level.movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getNumSteps(), packet.isMoving(), packet.getMovingDir());
 	}
 }
