@@ -98,7 +98,7 @@ public class GameEngine extends Canvas implements Runnable
 		player = new PlayerMP(level, 30, 30, input, JOptionPane.showInputDialog(this, "Please enter a username"),
                 null, -1);
         level.addEntity(player);
-        Packet00Login loginPacket = new Packet00Login(player.getUsername());
+        Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.x, player.y);
         if (socketServer != null) {
             socketServer.addConnection((PlayerMP) player, loginPacket);
         }
