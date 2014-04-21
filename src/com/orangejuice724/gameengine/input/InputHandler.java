@@ -39,6 +39,7 @@ public class InputHandler implements KeyListener
 	public Key down = new Key();
 	public Key left = new Key();
 	public Key right = new Key();
+	public Key keyE = new Key();
 	
 	public void keyPressed(KeyEvent e) 
 	{
@@ -61,6 +62,7 @@ public class InputHandler implements KeyListener
 		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) down.toggle(isPressed);
 		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) left.toggle(isPressed);
 		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) right.toggle(isPressed);
+		if(keyCode == KeyEvent.VK_E) keyE.toggle(isPressed);
 	}
 	
 }

@@ -19,10 +19,15 @@ public abstract class Tile
 	{ 1, 5 },
 	{ 2, 5 },
 	{ 1, 5 } }, Colours.get(-1, 004, 115, -1), 0xff0000ff, 1000);
+	public static final Tile WOODPLANKS = new BaseTile(4, 3, 0, Colours.get(
+			320, 431, 542, -1), 0xfff0f0f0);
+	public static final Tile CHEST = new TileEntity(5, 0, 1, Colours.get(131,
+			431, 542, 550), 0xff123456);
 	
 	protected byte id;
 	protected boolean solid;
 	protected boolean emitter;
+	protected boolean entity;
 	private int levelColour;
 	
 	public Tile(int id, boolean isSolid, boolean isEmitter, int levelColour)

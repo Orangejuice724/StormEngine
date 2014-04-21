@@ -7,12 +7,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.orangejuice724.gameengine.entities.blocks.Chest;
 import com.orangejuice724.gameengine.entities.player.Player;
 import com.orangejuice724.gameengine.entities.player.PlayerMP;
+import com.orangejuice724.gameengine.graphics.Colours;
+import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
@@ -33,6 +38,8 @@ public class GameEngine extends Canvas implements Runnable
 	public static GameEngine gameEngine;
 	
 	public JFrame frame;
+	
+	public List<Chest> chests = new ArrayList<Chest>();
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -103,6 +110,8 @@ public class GameEngine extends Canvas implements Runnable
             socketServer.addConnection((PlayerMP) player, loginPacket);
         }
         loginPacket.writeData(socketClient);
+        chests.add(new Chest(level, 32, 32, player, input));
+        level.addEntity(chests.get(0));
 	}
 	
 	public synchronized void start()
@@ -184,6 +193,10 @@ public class GameEngine extends Canvas implements Runnable
 		tickCount++;
 		
 		level.tick();
+		for(Chest c : chests)
+		{
+			c.tick();
+		}
 	}
 	
 	public void render()
@@ -210,6 +223,11 @@ public class GameEngine extends Canvas implements Runnable
 				if (colourCode < 255)
 					pixels[x + y * WIDTH] = colours[colourCode];
 			}
+		}
+		
+		for(int c = 0; c < chests.size(); c++)
+		{
+			chests.get(c).render(screen);
 		}
 		
 		Graphics g = bs.getDrawGraphics();

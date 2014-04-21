@@ -7,6 +7,7 @@ import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.input.InputHandler;
 import com.orangejuice724.gameengine.level.Level;
+import com.orangejuice724.gameengine.level.tiles.TileEntity;
 import com.orangejuice724.gameengine.net.packets.Packet02Move;
 
 public class Player extends Mob
@@ -17,6 +18,8 @@ public class Player extends Mob
 	private int scale = 1;
 	protected boolean isSwimming = false;
 	private int tickCount;
+	
+	private boolean nearChest;
 	
 	private String username;
 	
@@ -186,5 +189,10 @@ public class Player extends Mob
 	public String getUsername()
 	{
 		return this.username;
+	}
+	
+	private void openChest(TileEntity tileEntity)
+	{
+		
 	}
 }
