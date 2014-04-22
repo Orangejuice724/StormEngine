@@ -23,6 +23,8 @@ public abstract class Tile
 			320, 431, 542, -1), 0xfff0f0f0);
 	public static final Tile CHEST = new TileEntity(5, 0, 1, Colours.get(131,
 			431, 542, 550), 0xff123456);
+	public static final Tile FLOWER = new BaseTile(6, 4, 0, Colours.get(-1, 131,
+			141, 541), 0xff00ff00);
 	
 	protected byte id;
 	protected boolean solid;
