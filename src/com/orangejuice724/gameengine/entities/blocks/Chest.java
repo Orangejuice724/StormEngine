@@ -1,5 +1,7 @@
 package com.orangejuice724.gameengine.entities.blocks;
 
+import java.awt.Graphics;
+
 import javax.swing.JOptionPane;
 
 import com.orangejuice724.gameengine.entities.Entity;
@@ -31,8 +33,8 @@ public class Chest extends Entity
 		this.player = player;
 		this.input = input;
 		this.id = id;
-		generateContents();
 		guiChest = new GUIChest();
+		generateContents();
 	}
 	
 	@Override
@@ -43,10 +45,10 @@ public class Chest extends Entity
 			if (input.keyE.isPressed() && canOpenChest)
 				openChest();
 		}
+		guiChest.tick();
 	}
 	
-	@Override
-	public void render(Screen screen)
+	public void render(Screen screen, Graphics g)
 	{
 		int modifier = 8 * scale;
 		int xOffset = x - modifier / 2;
@@ -59,12 +61,12 @@ public class Chest extends Entity
 			Font.render(message, screen, x - (32), yOffset - 10,
 					Colours.get(-1, 555, 0, 0), scale);
 		}
+		guiChest.render(screen, g);
 	}
 	
 	public void openChest()
 	{
-		JOptionPane.showConfirmDialog(null, "Lol this does nothing");
-		canOpenChest = false;
+		guiChest.openChest();
 	}
 	
 	public int getID()
@@ -74,6 +76,12 @@ public class Chest extends Entity
 	
 	public void generateContents()
 	{
-		guiChest.getChestSlot().addItem(0);
+		guiChest.addItemToSlot(0);
+	}
+	
+	@Override
+	public void render(Screen screen)
+	{
+		
 	}
 }

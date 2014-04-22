@@ -1,5 +1,7 @@
 package com.orangejuice724.gameengine.entities;
 
+import java.awt.Graphics;
+
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.level.Level;
 
@@ -21,4 +23,5 @@ public abstract class Entity
 	public abstract void tick();
 	
 	public abstract void render(Screen screen);
+	public abstract void render(Screen screen, Graphics g);
 }

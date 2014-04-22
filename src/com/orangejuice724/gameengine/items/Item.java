@@ -1,12 +1,13 @@
 package com.orangejuice724.gameengine.items;
 
+import com.orangejuice724.gameengine.graphics.Colours;
 import com.orangejuice724.gameengine.graphics.Screen;
 
 public abstract class Item
 {
 	public static final Item[] items =  new Item[256];
 	
-	public Item itemStick = new ItemBase(0, "Stick", 0, 8);
+	public Item itemStick = new ItemBase(0, "Stick", 0, 8, Colours.get(-1, 321, 000, -1));
 	
 	protected byte id;
 	protected boolean shouldRender;
@@ -34,9 +35,9 @@ public abstract class Item
 		return -1;
 	}
 	
-	public static String getName(int id)
+	public String getName()
 	{
-		return items[id].itemName;
+		return itemName;
 	}
 	
 	public static Item getItem(int id)

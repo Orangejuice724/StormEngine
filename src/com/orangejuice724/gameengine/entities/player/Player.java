@@ -1,5 +1,7 @@
 package com.orangejuice724.gameengine.entities.player;
 
+import java.awt.Graphics;
+
 import com.orangejuice724.gameengine.GameEngine;
 import com.orangejuice724.gameengine.entities.Mob;
 import com.orangejuice724.gameengine.graphics.Colours;
@@ -192,6 +194,12 @@ public class Player extends Mob
 	}
 	
 	private void openChest(TileEntity tileEntity)
+	{
+		
+	}
+
+	@Override
+	public void render(Screen screen, Graphics g)
 	{
 		
 	}

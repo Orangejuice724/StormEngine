@@ -1,5 +1,6 @@
 package com.orangejuice724.gameengine.level;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -157,11 +158,12 @@ public class Level
 		}
 	}
 	
-	public void renderEntities(Screen screen)
+	public void renderEntities(Screen screen, Graphics g)
 	{
 		for (Entity e : getEntities())
 		{
 			e.render(screen);
+			e.render(screen, g);
 		}
 	}
 	

@@ -10,4 +10,9 @@ public class SlotChest extends Slot
 		super(x, y);
 	}
 	
+	public void tick()
+	{
+		this.x = 50;
+		this.y = 10;
+	}
 }

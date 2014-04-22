@@ -208,12 +208,15 @@ public class GameEngine extends Canvas implements Runnable
 			return;
 		}
 		
+		Graphics g = bs.getDrawGraphics();
+		g.drawRect(0, 0, getWidth(), getHeight());
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		int xOffset = player.x - (screen.width / 2);
 		int yOffset = player.y - (screen.height / 2);
 		
 		level.renderTiles(screen, xOffset, yOffset);
 		
-		level.renderEntities(screen);
+		level.renderEntities(screen, g);
 		
 		for (int y = 0; y < screen.height; y++)
 		{
@@ -224,15 +227,6 @@ public class GameEngine extends Canvas implements Runnable
 					pixels[x + y * WIDTH] = colours[colourCode];
 			}
 		}
-		
-		for(int c = 0; c < chests.size(); c++)
-		{
-			chests.get(c).render(screen);
-		}
-		
-		Graphics g = bs.getDrawGraphics();
-		g.drawRect(0, 0, getWidth(), getHeight());
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();
 	}

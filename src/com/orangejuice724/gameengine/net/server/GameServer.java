@@ -83,7 +83,6 @@ public class GameServer extends Thread
 			break;
 		case MOVE:
 			packet = new Packet02Move(data);
-			System.out.println(((Packet02Move) packet).getUsername());
 			this.handleMove(((Packet02Move) packet));
 			break;
 		}

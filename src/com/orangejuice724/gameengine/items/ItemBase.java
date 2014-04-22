@@ -1,17 +1,19 @@
 package com.orangejuice724.gameengine.items;
 
+import com.orangejuice724.gameengine.graphics.Colours;
 import com.orangejuice724.gameengine.graphics.Screen;
 
 public class ItemBase extends Item
 {
 
-	protected int tileId;
-	protected int tileColour;
+	public int tileId;
+	public int tileColour;
 	
-	public ItemBase(int id, String name, int tileX, int tileY)
+	public ItemBase(int id, String name, int tileX, int tileY, int itemColour)
 	{
 		super(id, name);
 		this.tileId = tileX+tileY*32;
+		tileColour = itemColour;
 	}
 
 	@Override
