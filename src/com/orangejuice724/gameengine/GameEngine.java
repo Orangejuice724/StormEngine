@@ -110,7 +110,7 @@ public class GameEngine extends Canvas implements Runnable
             socketServer.addConnection((PlayerMP) player, loginPacket);
         }
         loginPacket.writeData(socketClient);
-        chests.add(new Chest(level, 32, 32, player, input));
+        chests.add(new Chest(level, 32, 32, player, input, 0));
         level.addEntity(chests.get(0));
 	}
 	
