@@ -25,7 +25,8 @@ public class GUIChest
 	{
 		try
 		{
-			image = ImageIO.read(this.getClass().getResource("/gui/chest_big.png"));
+			image = ImageIO.read(this.getClass().getResource(
+					"/gui/chest_big.png"));
 		}
 		catch (IOException e)
 		{
@@ -40,11 +41,11 @@ public class GUIChest
 	}
 	
 	public void render(Screen screen, Graphics g)
-	{		
-		if(isOpened)
+	{
+		if (isOpened)
 		{
+			// slotChest.renderItem(screen);
 			g.drawImage(image, (screen.width / 2) + 50, 35, null);
-			slotChest.renderItem(screen);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class GUIChest
 	
 	public SlotChest getChestSlot()
 	{
-		if(slotChest == null)
+		if (slotChest == null)
 			return null;
 		return (SlotChest) slotChest;
 	}

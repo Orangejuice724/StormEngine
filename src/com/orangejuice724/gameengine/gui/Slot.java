@@ -31,5 +31,6 @@ public abstract class Slot
 	public void renderItem(Screen screen)
 	{
 		screen.render(x, y, (0+8)*32, Colours.get(-1, 321, 000, -1), 0, 1);
+		
 	}
 }
