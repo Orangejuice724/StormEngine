@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 import com.orangejuice724.gameengine.entities.blocks.Chest;
 import com.orangejuice724.gameengine.entities.player.Player;
 import com.orangejuice724.gameengine.entities.player.PlayerMP;
-import com.orangejuice724.gameengine.graphics.Colours;
-import com.orangejuice724.gameengine.graphics.Font;
 import com.orangejuice724.gameengine.graphics.Screen;
 import com.orangejuice724.gameengine.graphics.SpriteSheet;
 import com.orangejuice724.gameengine.input.InputHandler;
@@ -99,19 +97,23 @@ public class GameEngine extends Canvas implements Runnable
 		}
 		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+		screen.addSheet("/gui/chest_big.png", 1);
 		input = new InputHandler(this);
 		windowHandler = new WindowHandler(this);
 		level = new Level("/levels/medium_test_level.png");
-		player = new PlayerMP(level, 30, 30, input, JOptionPane.showInputDialog(this, "Please enter a username"),
-                null, -1);
-        level.addEntity(player);
-        Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.x, player.y);
-        if (socketServer != null) {
-            socketServer.addConnection((PlayerMP) player, loginPacket);
-        }
-        loginPacket.writeData(socketClient);
-        chests.add(new Chest(level, 32, 32, player, input, 0));
-        level.addEntity(chests.get(0));
+		player = new PlayerMP(level, 30, 30, input,
+				JOptionPane.showInputDialog(this, "Please enter a username"),
+				null, -1);
+		level.addEntity(player);
+		Packet00Login loginPacket = new Packet00Login(player.getUsername(),
+				player.x, player.y);
+		if (socketServer != null)
+		{
+			socketServer.addConnection((PlayerMP) player, loginPacket);
+		}
+		loginPacket.writeData(socketClient);
+		chests.add(new Chest(level, 32, 32, player, input, 0));
+		level.addEntity(chests.get(0));
 	}
 	
 	public synchronized void start()
@@ -193,7 +195,7 @@ public class GameEngine extends Canvas implements Runnable
 		tickCount++;
 		
 		level.tick();
-		for(Chest c : chests)
+		for (Chest c : chests)
 		{
 			c.tick();
 		}

@@ -7,15 +7,18 @@ public abstract class Item
 {
 	public static final Item[] items =  new Item[256];
 	
-	public Item itemStick = new ItemBase(0, "Stick", 0, 8, Colours.get(-1, 321, 000, -1));
+	public static final Item itemStick = new ItemBase(0, "Stick", 0, 8, Colours.get(-1, 321, 000, -1));
 	
 	protected byte id;
 	protected boolean shouldRender;
 	protected String itemName;
+	protected int tileId;
 	
-	public Item(int id, String name)
+	public Item(int id, String name, int tileId)
 	{
 		this.id = (byte)id;
+		items[id] = this;
+		items[id].tileId = tileId;
 	}
 	
 	public int getId()
@@ -40,8 +43,18 @@ public abstract class Item
 		return itemName;
 	}
 	
+	public Item getItem()
+	{
+		return items[id];
+	}
+	
 	public static Item getItem(int id)
 	{
 		return items[id];
+	}
+	
+	public int getTileID()
+	{
+		return tileId;
 	}
 }

@@ -5,9 +5,9 @@ import com.orangejuice724.gameengine.gui.Slot;
 public class SlotChest extends Slot
 {
 
-	public SlotChest(int x, int y)
+	public SlotChest(int id, int x, int y)
 	{
-		super(x, y);
+		super(x, y, id);
 	}
 	
 	public void tick()

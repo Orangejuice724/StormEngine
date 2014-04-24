@@ -18,6 +18,8 @@ public class Screen
 	
 	public SpriteSheet sheet;
 	
+	public static final SpriteSheet[] sheets = new SpriteSheet[256];
+	
 	public Screen(int width, int height, SpriteSheet sheet)
 	{
 		this.width = width;
@@ -80,5 +82,59 @@ public class Screen
 	{
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+	}
+	
+	public void addSheet(String path, int id)
+	{
+		sheets[id] = new SpriteSheet(path);
+	}
+	
+	public void renderGUI(int xPos, int yPos, int tile, int colour, int mirrorDir,
+			int scale, int sheetId)
+	{
+		xPos -= xOffset;
+		yPos -= yOffset;
+		
+		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
+		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
+		
+		int scaleMap = scale - 1;
+		int xTile = tile % 32;
+		int yTile = tile / 32;
+		int tileOffset = (xTile << 3) + (yTile << 3) * sheets[sheetId].width;
+		for (int y = 0; y < sheets[sheetId].height; y++)
+		{
+			int ySheet = y;
+			if (mirrorY)
+				ySheet = 7 - y;
+			
+			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2);
+			
+			for (int x = 0; x < sheets[sheetId].width; x++)
+			{
+				int xSheet = x;
+				if (mirrorX)
+					xSheet = 7 - x;
+				
+				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
+				
+				int col = (colour >> (sheets[sheetId].pixels[xSheet + ySheet
+						* sheets[sheetId].width + tileOffset] * 8)) & 255;
+				if (col < 255)
+				{
+					for (int yScale = 0; yScale < scale; yScale++)
+					{
+						if (yPixel + yScale < 0 || yPixel + yScale >= sheets[sheetId].height)
+							continue;
+						for (int xScale = 0; xScale < scale; xScale++)
+						{
+							if (xPixel + xScale < 0 || xPixel + xScale >= sheets[sheetId].width)
+								continue;
+							sheets[sheetId].pixels[(xPixel + xScale) + (yPixel + yScale) * sheets[sheetId].width] = col;
+						}
+					}
+				}
+			}
+		}
 	}
 }

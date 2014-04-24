@@ -32,7 +32,7 @@ public class GUIChest
 		{
 			e.printStackTrace();
 		}
-		slotChest = new SlotChest(0, 0);
+		slotChest = Slot.slots[0];
 	}
 	
 	public void tick()
@@ -44,8 +44,10 @@ public class GUIChest
 	{
 		if (isOpened)
 		{
-			// slotChest.renderItem(screen);
-			g.drawImage(image, (screen.width / 2) + 50, 35, null);
+			slotChest.renderItem(screen, 0);
+			screen.renderGUI(0, 0, 0,
+					Colours.get(111, 153, 204, 102), 0, 0, 1);
+			// g.drawImage(image, (screen.width / 2) + 50, 35, null);
 		}
 	}
 	
@@ -76,6 +78,6 @@ public class GUIChest
 	public void addItemToSlot(int itemId)
 	{
 		System.out.println("Hi");
-		slotChest.addItem(itemId);
+		slotChest.addItem(itemId, 0);
 	}
 }
