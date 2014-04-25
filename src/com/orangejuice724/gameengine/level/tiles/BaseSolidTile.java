@@ -1,5 +1,6 @@
 package com.orangejuice724.gameengine.level.tiles;
 
+
 public class BaseSolidTile extends BaseTile
 {
 
@@ -8,5 +9,4 @@ public class BaseSolidTile extends BaseTile
 		super(id, x, y, tileColour, levelColour);
 		this.solid = true;
 	}
-	
 }
