@@ -18,6 +18,7 @@ public class Chest extends Entity
 	
 	private int scale = 1;
 	private int colour = Colours.get(-1, 431, 542, 550);
+	//private int colour = Colours.get(-1, 431, 542, 550, 000, 111);
 	private Player player;
 	private InputHandler input;
 	private boolean canOpenChest = true;
@@ -54,19 +55,19 @@ public class Chest extends Entity
 		int xOffset = x - modifier / 2;
 		int yOffset = y - modifier / 2 - 4;
 		
-		screen.render(xOffset, yOffset, (0 + 1) * 32, colour, 0, scale);
+		//screen.renderColour(xOffset, yOffset, (0 + 1) * 32, colour, 0, 1);
 		if ((player.x - x) + (player.y - y) < 10 && canOpenChest)
 		{
-			String message = "Press E to Open";
-			Font.render(message, screen, x - (32), yOffset - 10,
-					Colours.get(-1, 555, 0, 0), scale);
+			//String message = "Press E to Open";
+			//Font.render(message, screen, x - (32), yOffset - 10,
+					//Colours.get(-1, 555, 0, 0), scale);
 		}
-		guiChest.render(screen, g);
+		//guiChest.render(screen, g);
 	}
 	
 	public void openChest()
 	{
-		guiChest.openChest();
+		//guiChest.openChest();
 	}
 	
 	public int getID()

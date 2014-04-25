@@ -24,12 +24,12 @@ public abstract class Tile
 	public static final Tile CHEST = new TileEntity(5, 0, 1, Colours.get(131,
 			431, 542, 550), 0xff123456);
 	public static final Tile FLOWER = new BaseTile(6, 4, 0, Colours.get(-1, 131,
-			141, -1), 0xff000f00);
+			141, 550), 0xff000f00);
 	public static final Tile BRICK = new BaseTile(7, 5, 0, Colours.get(-1, 232,
 			454, -1), 0xffCC6699);
 	public static final Tile FENCE = new BaseSolidTile(8, 6, 0, Colours.get(-1,
 			131, 121, 555), 0xffCCFF99);
-	public static final Tile SIDE_FENCE = new BaseSolidTile(9, 7, 0, Colours.get(-1,
+	public static final Tile SIDE_FENCE = new BaseSolidTile(9, 9, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF88);
 	public static final Tile CORNER_FENCE_0 = new BaseCornerTile(10, 8, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF77, 0);

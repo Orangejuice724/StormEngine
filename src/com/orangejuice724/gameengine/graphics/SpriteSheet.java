@@ -18,7 +18,7 @@ public class SpriteSheet
 		BufferedImage image = null;
 		
 		try {
-			image = ImageIO.read(SpriteSheet.class.getResourceAsStream(path));
+			image = ImageIO.read(SpriteSheet.class.getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +32,8 @@ public class SpriteSheet
 		this.width = image.getWidth();
 		this.height = image.getHeight();
 		
-		pixels = image.getRGB(0, 0, width, height, null, 0, width);
+		pixels = new int[width * height];
+		image.getRGB(0, 0, width, height, pixels, 0, width);
 		
 		for(int i = 0; i < pixels.length; i++)
 		{
@@ -42,5 +43,14 @@ public class SpriteSheet
 			 */
 			pixels[i] = (pixels[i] & 0xff)/64;
 		}
+		
+//		pixels = new int[width * height];
+//		
+//		for (int i = 0; i < width * height; i++) {
+//			int r = (pixels[i] & 0xff0000) >> 16;
+//			int g = (pixels[i] & 0xff00) >> 8;
+//			int b = (pixels[i] & 0xff);
+//			pixels[i] = r << 16 | g << 8 | b;
+//		}
 	}
 }
