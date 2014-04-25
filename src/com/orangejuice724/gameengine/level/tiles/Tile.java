@@ -31,13 +31,13 @@ public abstract class Tile
 			131, 121, 555), 0xffCCFF99);
 	public static final Tile SIDE_FENCE = new BaseSolidTile(9, 7, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF88);
-	public static final Tile CORNER_FENCE_0 = new BaseCornerTile(9, 8, 0, Colours.get(-1,
+	public static final Tile CORNER_FENCE_0 = new BaseCornerTile(10, 8, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF77, 0);
-	public static final Tile CORNER_FENCE_1 = new BaseCornerTile(9, 8, 0, Colours.get(-1,
+	public static final Tile CORNER_FENCE_1 = new BaseCornerTile(11, 8, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF66, 1);
-	public static final Tile CORNER_FENCE_2 = new BaseCornerTile(9, 8, 0, Colours.get(-1,
+	public static final Tile CORNER_FENCE_2 = new BaseCornerTile(12, 8, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF55, 2);
-	public static final Tile CORNER_FENCE_3 = new BaseCornerTile(9, 8, 0, Colours.get(-1,
+	public static final Tile CORNER_FENCE_3 = new BaseCornerTile(13, 8, 0, Colours.get(-1,
 			131, 121, 555), 0xFFCCFF44, 3);
 	
 	protected byte id;
