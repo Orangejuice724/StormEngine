@@ -24,7 +24,11 @@ public abstract class Tile
 	public static final Tile CHEST = new TileEntity(5, 0, 1, Colours.get(131,
 			431, 542, 550), 0xff123456);
 	public static final Tile FLOWER = new BaseTile(6, 4, 0, Colours.get(-1, 131,
-			141, 541), 0xff000f00);
+			141, -1), 0xff000f00);
+	public static final Tile BRICK = new BaseTile(7, 5, 0, Colours.get(-1, 232,
+			454, -1), 0xffCC6699);
+	public static final Tile FENCE = new BaseSolidTile(8, 6, 0, Colours.get(-1,
+			131, 121, 555), 0xffCCFF99);
 	
 	protected byte id;
 	protected boolean solid;
