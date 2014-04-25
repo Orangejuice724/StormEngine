@@ -19,8 +19,8 @@ public class BaseCornerTile extends BaseTile
 	{
 		if(corner == 0)	screen.render(x, y, tileId, tileColour, 0x00, 1);
 		if(corner == 1)	screen.render(x, y, tileId, tileColour, 0x01, 1);
-		if(corner == 2)	screen.render(x, y, tileId, tileColour, 0x10, 1);
-		if(corner == 3)	screen.render(x, y, tileId, tileColour, 0x11, 1);
+		if(corner == 2)	screen.render(x, y, tileId, tileColour, 0x02, 1);
+		if(corner == 3)	screen.render(x, y, tileId, tileColour, 0x03, 1);
 	}
 	
 }
